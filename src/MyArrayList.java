@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class MyArrayList<T>  {
+public abstract class MyArrayList<T> implements MyList<T>{
     private Object[] elements;
     private int size;
     private static final int default_value = 10;
@@ -9,6 +9,7 @@ public class MyArrayList<T>  {
         this.elements = new Object[default_value];
         this.size = 0;
     }
+
 
     public MyArrayList(int initialCapacity) {
         if (initialCapacity <= 0) {
@@ -66,6 +67,19 @@ public class MyArrayList<T>  {
         }
         return (T) elements[index];
     }
+    @SuppressWarnings("unchecked")
+    public T remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+        }
+        T removedElement = (T) elements[index];
+        for (int i = index; i < size - 1; i++) {
+            elements[i] = elements[i + 1];
+        }
+        elements[size - 1] = null;
+        size--;
+        return removedElement;
+    }
 
     public T getFirst() {
         if (size == 0) {
@@ -81,13 +95,7 @@ public class MyArrayList<T>  {
         return (T) elements[size - 1];
     }
 
-    public void remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds");
-        }
-        System.arraycopy(elements, index + 1, elements, index, size - index - 1);
-        size--;
-    }
+
     public void removeFirst() {
         if (size == 0) {
             throw new IllegalStateException("List is empty");
