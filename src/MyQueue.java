@@ -1,3 +1,8 @@
+/**
+ * MyQueue class implements a queue using an underlying MyLinkedList.
+ * @param <T> the type of elements in this queue
+ * Constuct an empty queue , and then is methods
+ */
 public class MyQueue<T>{
     private MyLinkedList<T> list;
     public MyQueue(){

@@ -1,3 +1,8 @@
+/**
+ * MyStack class implements a stack using an underlying MyArrayList.
+ * @param <T> the type of elements in this stack
+ * MyStack constructs an empty stack, then is the methods
+ */
 public class MyStack<T> {
     private MyArrayList<T> list;
 

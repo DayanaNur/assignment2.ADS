@@ -1,3 +1,10 @@
+/**
+ * MyMinHeap class implements a min-heap data structure using an underlying MyArrayList.
+ * @param <T> the type of elements stored in the heap, which must be Comparable
+ *  Constructs an empty min-heap.
+ *  bubbleUp moves the element at the specified index up the heap to maintain the heap property.
+ *  bubbleDown moves the element at the specified index down the heap to maintain the heap property.
+ */
 public class MyMinHeap <T extends Comparable <T>>{
     private MyArrayList<T> heap;
     public MyMinHeap(){
