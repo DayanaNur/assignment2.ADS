@@ -1,3 +1,15 @@
+/**
+ * MyArrayList class implements a resizable array-based implementation of the MyList interface.
+ * @param <T> the type of elements in this list
+ * MyArrayList constructs an empty list with the specified initial capacity.
+ * @param initialCapacity the initial capacity of the list
+ * ensureCapacity ensures that the capacity of the list is at least equal to the specified minimum capacity.
+ * @param minCapacity the minimum capacity
+ * checkIndex Checks if the given index is valid.
+ *  @param index the index to check
+ * then is the methods of ArrayList
+ *
+ */
 import java.util.Iterator;
 
 public abstract class MyArrayList<T> implements MyList<T>{
@@ -34,16 +46,17 @@ public abstract class MyArrayList<T> implements MyList<T>{
     }
 
     public void set(int index, T item) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds");
-        }
+        checkIndex(index);
+
         arr[index] = item;
     }
-
-    public void add(int index, T item) {
+    public void checkIndex(int index){
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
+    }
+    public void add(int index, T item) {
+        checkIndex(index);
         ensureCapacity(size + 1);
         System.arraycopy(arr, index, arr, index + 1, size - index);
         arr[index] = item;
@@ -60,17 +73,13 @@ public abstract class MyArrayList<T> implements MyList<T>{
     }
 
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds");
-        }
+        checkIndex(index);
         return arr[index];
     }
 
     @SuppressWarnings("unchecked")
     public T remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
-        }
+        checkIndex(index);
         T removedElement = arr[index];
         for (int i = index; i < size - 1; i++) {
             arr[i] = arr[i + 1];

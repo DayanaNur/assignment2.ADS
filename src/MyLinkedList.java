@@ -1,3 +1,9 @@
+/**
+ * MyLinkedList class implements a doubly linked list-based implementation of the MyList interface.
+ * @param <E> the type of elements in this list
+ * MyLinkedList constructs an empty linked list.Then methods of LinkedList
+ *
+ */
 import java.util.NoSuchElementException;
 
 public class MyLinkedList<E> implements MyList<E>, Cloneable {
@@ -24,6 +30,7 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
         this.tail = null;
         this.size = 0;
     }
+
     public E removeFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException("List is empty");
@@ -47,6 +54,7 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
     public int size() {
         return size;
     }
+
     public boolean isEmpty() {
         return size == 0;
     }
@@ -61,14 +69,14 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
         }
         return false;
     }
+
     public boolean add(E element) {
         addLast(element);
         return true;
     }
+
     public void add(int index, E element) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        }
+        checkIndex(index);
         if (index == size) {
             addLast(element);
             return;
@@ -87,9 +95,7 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
     }
 
     public E remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        }
+        checkIndex(index);
         MyNode current = getNode(index);
         E removedElement = current.element;
         if (current == head) {
@@ -110,30 +116,32 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
         return removedElement;
     }
 
-    public E get(int index) {
+    public void checkIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
+    }
+
+    public E get(int index) {
+        checkIndex(index);
         MyNode node = getNode(index);
         return node.element;
     }
 
     public E set(int index, E element) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        }
+        checkIndex(index);
         MyNode node = getNode(index);
         E oldElement = node.element;
         node.element = element;
         return oldElement;
     }
+
     public boolean addAll(MyList<? extends E> list) {
         return addAll(size, list);
     }
+
     public boolean addAll(int index, MyList<? extends E> list) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        }
+        checkIndex(index);
         if (list.isEmpty()) {
             return false;
         }
@@ -166,6 +174,7 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
         }
         size++;
     }
+
     public void clear() {
         head = null;
         tail = null;
@@ -193,5 +202,48 @@ public class MyLinkedList<E> implements MyList<E>, Cloneable {
             current = current.next;
         }
         return current;
+    }
+
+    public int indexOf(E element) {
+        MyNode current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.element == element) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+
+    public boolean exists(E element) {
+        return indexOf(element) != -1;
+    }
+
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        MyNode current = head;
+        int index = 0;
+        while (current != null) {
+            array[index++] = current.element;
+            current = current.next;
+        }
+        return array;
+    }
+
+
+    public int lastIndexOf(E element) {
+        MyNode current = tail;
+        int index = size - 1;
+        while (current != null) {
+            if (current.element==element) {
+                return index;
+            }
+            current = current.prev;
+            index--;
+        }
+        return -1;
+
     }
 }
