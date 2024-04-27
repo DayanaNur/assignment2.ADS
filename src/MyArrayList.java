@@ -1,33 +1,31 @@
 import java.util.Iterator;
 
 public abstract class MyArrayList<T> implements MyList<T>{
-    private Object[] elements;
+    private T[] arr;
     private int size;
-    private static final int default_value = 10;
 
     public MyArrayList() {
-        this.elements = new Object[default_value];
+        this.arr = (T[]) new Object[10];
         this.size = 0;
     }
-
 
     public MyArrayList(int initialCapacity) {
         if (initialCapacity <= 0) {
             throw new IllegalArgumentException("Initial capacity must be positive");
         }
-        this.elements = new Object[initialCapacity];
+        this.arr = (T[]) new Object[initialCapacity];
         this.size = 0;
     }
 
     private void ensureCapacity(int minCapacity) {
-        if (minCapacity > elements.length) {
-            int newCapacity = elements.length * 2;
+        if (minCapacity > arr.length) {
+            int newCapacity = arr.length * 2;
             if (newCapacity < minCapacity) {
                 newCapacity = minCapacity;
             }
-            Object[] newArray = new Object[newCapacity];
-            System.arraycopy(elements, 0, newArray, 0, size);
-            elements = newArray;
+            T[] newArray = (T[]) new Object[newCapacity];
+            System.arraycopy(arr, 0, newArray, 0, size);
+            arr = newArray;
         }
     }
 
@@ -39,7 +37,7 @@ public abstract class MyArrayList<T> implements MyList<T>{
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        elements[index] = item;
+        arr[index] = item;
     }
 
     public void add(int index, T item) {
@@ -47,8 +45,8 @@ public abstract class MyArrayList<T> implements MyList<T>{
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
         ensureCapacity(size + 1);
-        System.arraycopy(elements, index, elements, index + 1, size - index);
-        elements[index] = item;
+        System.arraycopy(arr, index, arr, index + 1, size - index);
+        arr[index] = item;
         size++;
     }
 
@@ -58,25 +56,26 @@ public abstract class MyArrayList<T> implements MyList<T>{
 
     public void addLast(T item) {
         ensureCapacity(size + 1);
-        elements[size++] = item;
+        arr[size++] = item;
     }
 
     public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        return (T) elements[index];
+        return arr[index];
     }
+
     @SuppressWarnings("unchecked")
     public T remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds: " + index);
         }
-        T removedElement = (T) elements[index];
+        T removedElement = arr[index];
         for (int i = index; i < size - 1; i++) {
-            elements[i] = elements[i + 1];
+            arr[i] = arr[i + 1];
         }
-        elements[size - 1] = null;
+        arr[size - 1] = null;
         size--;
         return removedElement;
     }
@@ -85,16 +84,15 @@ public abstract class MyArrayList<T> implements MyList<T>{
         if (size == 0) {
             throw new IllegalStateException("List is empty");
         }
-        return (T) elements[0];
+        return arr[0];
     }
 
     public T getLast() {
         if (size == 0) {
             throw new IllegalStateException("List is empty");
         }
-        return (T) elements[size - 1];
+        return arr[size - 1];
     }
-
 
     public void removeFirst() {
         if (size == 0) {
@@ -102,6 +100,7 @@ public abstract class MyArrayList<T> implements MyList<T>{
         }
         remove(0);
     }
+
     public void removeLast() {
         if (size == 0) {
             throw new IllegalStateException("List is empty");
@@ -111,27 +110,28 @@ public abstract class MyArrayList<T> implements MyList<T>{
 
     public void sort() {
         for (int i = 1; i < size; i++) {
-            T key = (T) elements[i];
+            T key = arr[i];
             int j = i - 1;
-            while (j >= 0 && ((Comparable<T>) elements[j]).compareTo(key) > 0) {
-                elements[j + 1] = elements[j];
+            while (j >= 0 && ((Comparable<T>) arr[j]).compareTo(key) > 0) {
+                arr[j + 1] = arr[j];
                 j--;
             }
-            elements[j + 1] = key;
+            arr[j + 1] = key;
         }
     }
 
     public int indexOf(Object object) {
         for (int i = 0; i < size; i++) {
-            if (elements[i].equals(object)) {
+            if (arr[i].equals(object)) {
                 return i;
             }
         }
         return -1;
     }
+
     public int lastIndexOf(Object object) {
         for (int i = size - 1; i >= 0; i--) {
-            if (elements[i].equals(object)) {
+            if (arr[i].equals(object)) {
                 return i;
             }
         }
@@ -144,17 +144,19 @@ public abstract class MyArrayList<T> implements MyList<T>{
 
     public Object[] toArray() {
         Object[] array = new Object[size];
-        System.arraycopy(elements, 0, array, 0, size);
+        System.arraycopy(arr, 0, array, 0, size);
         return array;
     }
 
     public void clear() {
-        elements = new Object[default_value];
+        arr = (T[]) new Object[5];
         size = 0;
     }
+
     public int size() {
         return size;
     }
+
     public Iterator<T> iterator() {
         return new Iterator<T>() {
             private int currentIndex = 0;
@@ -169,9 +171,8 @@ public abstract class MyArrayList<T> implements MyList<T>{
                 if (!hasNext()) {
                     throw new IllegalStateException("No more elements to iterate");
                 }
-                return (T) elements[currentIndex++];
+                return arr[currentIndex++];
             }
         };
     }
 }
-
